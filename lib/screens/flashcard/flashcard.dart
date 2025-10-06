@@ -4,9 +4,8 @@ import 'package:cyber_licence/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:animate_do/animate_do.dart';
-// import 'testing_screen.dart';
 
-// Flashcard data (20 cards per level)
+// Flashcard data - EXACTLY from DEVDOC (20 cards per level)
 final Map<String, List<Map<String, String>>> flashcards = {
   'Learner': [
     {
@@ -22,256 +21,272 @@ final Map<String, List<Map<String, String>>> flashcards = {
     {
       'question': 'How to make strong passwords?',
       'answer':
-          'Use big/small letters, numbers, and symbols (e.g., Cat#2024). Avoid 1234 or password.',
+          'Use big/small letters, numbers, and symbols (e.g., Cat#2024). Avoid \'1234\' or \'password\'.',
     },
     {
       'question': 'Never share your password',
-      'answer': 'Keep it private. Even best friends should not know it.',
+      'answer': 'Keep it private. Even best friends shouldn\'t know it.',
     },
     {
-      'question': 'What is personal information?',
+      'question': 'What is personal information',
+      'answer': 'Your name, address, phone, school, and photos are private.',
+    },
+    {
+      'question': 'If something feels weird or scary online ...',
+      'answer': 'Ask a trusted adult.',
+    },
+    {
+      'question': 'Unsafe Links',
       'answer':
-          'Your name, address, school, phone number. Keep it private online.',
+          '"Free prizes" links are often tricks. Don\'t click; ask an adult first.',
     },
     {
-      'question': 'Why keep your birthday private?',
-      'answer': 'Hackers can use birthdays to guess passwords.',
-    },
-    {
-      'question': 'What is a digital footprint?',
+      'question': 'What does the Padlock on a browser mean?',
       'answer':
-          'Everything you post, write, or share online stays there for a long time.',
+          'A padlock/HTTPS shows a site is more secure before entering info.',
     },
     {
-      'question': 'Should you talk to strangers online?',
-      'answer': 'No. Strangers online may not be who they say they are.',
+      'question': 'What should you do after using shared/public devices.',
+      'answer': 'Log out after using.',
     },
     {
-      'question': 'What is a trusted adult?',
-      'answer': 'A parent, teacher, or guardian who can guide you online.',
+      'question': 'Be Kind Online',
+      'answer': 'Use kind words. If someone is mean, tell an adult.',
     },
     {
-      'question': 'What is a virus in computers?',
-      'answer': 'A harmful program that damages your files or steals info.',
-    },
-    {
-      'question': 'What is a pop-up ad?',
-      'answer': 'An ad that suddenly appears. Don’t click it—close it safely.',
-    },
-    {
-      'question': 'Why should you check for HTTPS?',
-      'answer': 'Websites with https:// are safer. Look for the lock icon.',
-    },
-    {
-      'question': 'Why use a nickname online?',
-      'answer': 'Nicknames keep your real identity safe.',
-    },
-    {
-      'question': 'What is cyberbullying?',
-      'answer': 'When someone is mean, rude, or hurtful online.',
-    },
-    {
-      'question': 'What should you do if bullied online?',
-      'answer': 'Don’t reply. Block them, tell a parent or teacher.',
-    },
-    {
-      'question': 'Why log out of accounts?',
-      'answer': 'Logging out keeps others from using your account.',
-    },
-    {
-      'question': 'Why avoid public Wi-Fi?',
-      'answer': 'Hackers can steal your information on public Wi-Fi.',
-    },
-    {
-      'question': 'What are app permissions?',
+      'question': 'What is a Pop-Up?',
       'answer':
-          'Permissions decide what info an app can access. Ask an adult before allowing.',
+          'Pop-ups are sudden windows; some are tricks. Don\'t click without checking.',
     },
     {
-      'question': 'What is a safe app?',
-      'answer': 'Apps downloaded from trusted stores and approved by parents.',
+      'question': 'Online Friends aren\'t always real',
+      'answer': 'People can pretend to be someone else.',
     },
     {
-      'question': 'Golden rule of internet use?',
-      'answer': 'Be safe, kind, and respectful to everyone online.',
+      'question': 'Game Chats',
+      'answer': 'Be careful in chats. Never share personal info.',
+    },
+    {
+      'question': 'Don\'t download without permission',
+      'answer': 'Ask an adult before downloading anything.',
+    },
+    {
+      'question': 'Use a nickname online',
+      'answer':
+          'Choose a nickname (e.g., StarTiger) instead of your real name.',
+    },
+    {
+      'question': 'Trusted Websites',
+      'answer': 'Use sites you know (school portal, kids\' learning).',
+    },
+    {
+      'question': 'Public Wi-Fi',
+      'answer': 'On public Wi-Fi, avoid logging into important accounts.',
+    },
+    {
+      'question': 'Check before clicking',
+      'answer': 'Buttons like "YOU WON" are often fake. Show an adult.',
+    },
+    {
+      'question': 'Not everything is true online',
+      'answer': 'Some posts are fake. Ask a teacher/parent if unsure.',
+    },
+    {
+      'question': 'Digital footprint',
+      'answer': 'What you share can stay online. Think before posting.',
     },
   ],
-
   'Probationary': [
     {
-      'question': 'What is phishing?',
+      'question': 'Personal information',
       'answer':
-          'Tricking people into sharing passwords or info through fake emails or links.',
+          'Your name, address, phone, birthday, and school are private. Ask an adult before sharing.',
     },
     {
-      'question': 'What is a firewall?',
-      'answer': 'A firewall protects your computer from hackers and malware.',
-    },
-    {
-      'question': 'What is a scam email?',
+      'question': 'Keep your birthday private',
       'answer':
-          'An email pretending to be real but tries to steal money or info.',
+          'Birthdays help hackers guess passwords. Don\'t post your exact birthday publicly.',
     },
     {
-      'question': 'Why use antivirus software?',
-      'answer': 'It blocks and removes harmful software from your computer.',
-    },
-    {
-      'question': 'What is a fake website?',
-      'answer': 'A site that looks real but is made to steal information.',
-    },
-    {
-      'question': 'Why not click on unknown links?',
-      'answer': 'They may lead to scams or download viruses.',
-    },
-    {
-      'question': 'What are privacy settings?',
-      'answer': 'Tools to control who can see your posts or info online.',
-    },
-    {
-      'question': 'Why check privacy settings often?',
-      'answer': 'To make sure only the right people can see your information.',
-    },
-    {
-      'question': 'What is a hacker?',
+      'question': 'Digital footprint',
       'answer':
-          'Someone who breaks into accounts, devices, or websites without permission.',
+          'Everything you post or share online can stay there for a long time.',
     },
     {
-      'question': 'Why not use same password everywhere?',
-      'answer': 'If one account is hacked, all others become unsafe.',
-    },
-    {
-      'question': 'What is a strong Wi-Fi password?',
-      'answer': 'A password that is long, unique, and hard to guess.',
-    },
-    {
-      'question': 'What is a digital footprint reminder?',
+      'question': 'Privacy settings',
       'answer':
-          'Everything you post online (photos, comments) may stay forever.',
+          'Make accounts private so only people you know can see your posts.',
     },
     {
-      'question': 'Why report bad online behavior?',
-      'answer': 'To keep the internet safe and stop bullies or scammers.',
+      'question': 'Fake Giveaways',
+      'answer':
+          '"Free iPhone!" or "Free Robux!" is usually a trick. Don\'t click - check with an adult.',
     },
     {
-      'question': 'What is a software update?',
-      'answer': 'Updates fix bugs and make devices more secure.',
+      'question': 'Phishing Messages',
+      'answer':
+          'Scammers pretend to be someone else to steal info. Be careful with messages asking for details.',
     },
     {
-      'question': 'What is a VPN?',
-      'answer': 'A tool that makes your internet private and safe.',
+      'question': 'Strange links',
+      'answer':
+          'Links that look weird or come from strangers can be dangerous. Avoid them.',
     },
     {
-      'question': 'Why avoid free game downloads?',
-      'answer': 'They may contain viruses or unsafe ads.',
+      'question': 'Fake shopping Sites',
+      'answer':
+          'If the deal seems too good to be true, it probably is. Stick to trusted stores.',
     },
     {
-      'question': 'What is a digital reputation?',
-      'answer': 'The way people see you online based on your posts.',
+      'question': 'Location in photos',
+      'answer':
+          'Photos can reveal where you live or go to school. Share carefully.',
     },
     {
-      'question': 'Why be careful what you post?',
-      'answer': 'Once posted, it can be copied or shared forever.',
+      'question': 'If you\'re unsure about something online ...',
+      'answer': 'Pause and ask a trusted adult.',
     },
     {
-      'question': 'What is a safe chat?',
-      'answer': 'Talking only with people you know in real life.',
+      'question': 'Think before you post',
+      'answer': 'Would you say it in real life? Think first, then post.',
     },
     {
-      'question': 'What is a safe browser?',
-      'answer': 'A browser that blocks harmful websites and keeps you safe.',
+      'question': 'Secure Websites',
+      'answer': 'Look for HTTPS and a padlock before entering any information.',
+    },
+    {
+      'question': 'Stronger Passwords',
+      'answer':
+          'Use letters, numbers, and symbols. Avoid names, birthdays, or the word "password."',
+    },
+    {
+      'question': 'Verification Codes',
+      'answer': 'Never share one-time codes sent to your phone or email.',
+    },
+    {
+      'question': 'Apps collect data',
+      'answer':
+          'Some apps track what you do. Ask an adult before installing new apps.',
+    },
+    {
+      'question': 'App permissions',
+      'answer':
+          'Only allow what\'s needed (camera for photos, mic for voice). Turn off extras.',
+    },
+    {
+      'question': 'Suspicious emails',
+      'answer':
+          'If an email asks for your password or money, Don\'t reply, report or delete it.',
+    },
+    {
+      'question': 'Too good to be true',
+      'answer': 'Big prizes or gifts online are often fake. Be careful.',
+    },
+    {
+      'question': 'Report & Block',
+      'answer': 'If someone acts mean or unsafe, block and report them.',
+    },
+    {
+      'question': 'Game chat Safety',
+      'answer': 'Only talk about the game. Never share personal info in chat.',
     },
   ],
-
   'Full': [
     {
-      'question': 'What is two-factor authentication?',
+      'question': 'How should you behave online?',
       'answer':
-          'A second step for login (like a code to your phone) to prove it’s you.',
+          'Being responsible, kind, and safe online in everything you do.',
     },
     {
-      'question': 'Why update software?',
-      'answer': 'Updates patch security holes and keep devices safe.',
-    },
-    {
-      'question': 'What is encryption?',
+      'question': 'What Is Cyberbullying?',
       'answer':
-          'A method of scrambling information so only the right person can read it.',
+          'When someone is mean or harmful online---messages, posts, or sharing hurtful content.',
     },
     {
-      'question': 'What is a data breach?',
-      'answer': 'When hackers steal information from a company’s database.',
+      'question': 'Responding to Bullying',
+      'answer': 'Don\'t fight back. Block, report, and tell a trusted adult.',
     },
     {
-      'question': 'Why use different emails?',
+      'question': 'Misinformation',
       'answer':
-          'Using different emails for accounts reduces risks if one is hacked.',
+          'False info shared online, sometimes by accident. Always verify.',
     },
     {
-      'question': 'What is malware?',
-      'answer': 'Software that damages devices or steals data.',
-    },
-    {
-      'question': 'Why avoid suspicious downloads?',
-      'answer': 'They may secretly install malware on your device.',
-    },
-    {
-      'question': 'What are cookies in browsing?',
-      'answer': 'Small files that track what you do online.',
-    },
-    {
-      'question': 'Why clear cookies?',
-      'answer': 'Clearing cookies helps protect your privacy.',
-    },
-    {
-      'question': 'What is a password manager?',
-      'answer': 'A secure tool that stores all your passwords safely.',
-    },
-    {
-      'question': 'Why not share your location?',
-      'answer': 'It reveals where you are and can be unsafe.',
-    },
-    {
-      'question': 'What is social engineering?',
-      'answer': 'Tricking people into giving private information.',
-    },
-    {
-      'question': 'Why check website URLs?',
-      'answer': 'Fake websites often use tricky names to fool you.',
-    },
-    {
-      'question': 'What is a secure backup?',
-      'answer': 'Saving copies of your data safely in another place.',
-    },
-    {
-      'question': 'Why backup data?',
-      'answer': 'So you don’t lose it if your device breaks or is stolen.',
-    },
-    {
-      'question': 'What is a bot online?',
-      'answer': 'A program pretending to be a human online.',
-    },
-    {
-      'question': 'Why avoid clicking ads?',
-      'answer': 'Many ads lead to unsafe sites or malware.',
-    },
-    {
-      'question': 'What is a trusted app store?',
+      'question': 'Fact-Checking',
       'answer':
-          'Official stores (like Google Play, App Store) with safer apps.',
+          'Check trusted sources and compare more than one website before believing.',
     },
     {
-      'question': 'Why check app permissions?',
-      'answer': 'To control what data apps can access (camera, contacts, etc).',
+      'question': 'Screen time balance',
+      'answer':
+          'Too much screen time can affect sleep, mood, and health. Take breaks.',
     },
     {
-      'question': 'Golden rule at Full Level?',
-      'answer': 'Always think before you click, post, or share!',
+      'question': 'Respect others\' privacy',
+      'answer':
+          'Don\'t share someone else\'s photo or info without permission.',
+    },
+    {
+      'question': 'Reporting tools',
+      'answer':
+          'Use report buttons on apps like TikTok, YouTube, or Discord to flag harm.',
+    },
+    {
+      'question': 'Think Before Posting',
+      'answer': 'Would you say it face to face? If not, don\'t post it.',
+    },
+    {
+      'question': 'Real-Life effects of online activity',
+      'answer':
+          'Online actions can affect school, friendships, and opportunities.',
+    },
+    {
+      'question': 'Online heated arguments',
+      'answer': 'Online fights grow quickly. It\'s okay to step away.',
+    },
+    {
+      'question': 'Terms & Conditions',
+      'answer': 'These explain rules for using apps or sites. Know the basics.',
+    },
+    {
+      'question': 'Sharing Secrets',
+      'answer': 'Once a secret is online, it can spread fast. Be careful.',
+    },
+    {
+      'question': 'Fake news tricks',
+      'answer':
+          'ALL CAPS or "SHOCKING!" headlines can be misleading. Stay skeptical.',
+    },
+    {
+      'question': 'Tone & Emojis',
+      'answer':
+          'Text can be misunderstood. Add context or emojis to be clear and kind.',
+    },
+    {
+      'question': 'Healthy gaming behaviour',
+      'answer':
+          'Good friends respect your boundaries and safety rules in games.',
+    },
+    {
+      'question': 'Peer pressure',
+      'answer':
+          'Just because others do it online doesn\'t make it safe or right.',
+    },
+    {
+      'question': 'Reputation matters',
+      'answer':
+          'Future schools or jobs may see old posts. Build a positive record.',
+    },
+    {
+      'question': 'Take breaks',
+      'answer': 'Short offline breaks help your eyes and brain reset.',
+    },
+    {
+      'question': 'Be a role model',
+      'answer': 'Lead by example---be positive, helpful, and safe online.',
     },
   ],
 };
-// <- aapke 60 flashcards L,P,F
 
 class FlashcardsScreen extends StatefulWidget {
   const FlashcardsScreen({super.key});
@@ -286,8 +301,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   bool showAnswer = false;
   bool isLearnerCompleted = false;
   bool isProbationaryCompleted = false;
+  bool isFullCompleted = false;
   bool isLearnerPassed = false;
   bool isProbationaryPassed = false;
+  bool isFullPassed = false;
 
   @override
   void initState() {
@@ -301,8 +318,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       isLearnerCompleted = prefs.getBool('isLearnerCompleted') ?? false;
       isProbationaryCompleted =
           prefs.getBool('isProbationaryCompleted') ?? false;
+      isFullCompleted = prefs.getBool('isFullCompleted') ?? false;
       isLearnerPassed = prefs.getBool('isLearnerPassed') ?? false;
       isProbationaryPassed = prefs.getBool('isProbationaryPassed') ?? false;
+      isFullPassed = prefs.getBool('isFullPassed') ?? false;
     });
   }
 
@@ -310,8 +329,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLearnerCompleted', isLearnerCompleted);
     await prefs.setBool('isProbationaryCompleted', isProbationaryCompleted);
+    await prefs.setBool('isFullCompleted', isFullCompleted);
     await prefs.setBool('isLearnerPassed', isLearnerPassed);
     await prefs.setBool('isProbationaryPassed', isProbationaryPassed);
+    await prefs.setBool('isFullPassed', isFullPassed);
   }
 
   void _nextCard() {
@@ -320,10 +341,13 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
         currentCardIndex++;
         showAnswer = false;
       } else {
+        // Mark level as completed when all flashcards viewed
         if (selectedLevel == 'Learner') {
           isLearnerCompleted = true;
         } else if (selectedLevel == 'Probationary') {
           isProbationaryCompleted = true;
+        } else if (selectedLevel == 'Full') {
+          isFullCompleted = true;
         }
         _saveProgress();
       }
@@ -339,38 +363,108 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     });
   }
 
-  void _goToTesting() {
-    setState(() {
+  bool _canAttemptPuzzle() {
+    if (selectedLevel == 'Learner') {
+      return isLearnerCompleted; // Can attempt L Puzzle if completed all L FCs
+    } else if (selectedLevel == 'Probationary') {
+      return isLearnerCompleted &&
+          isProbationaryCompleted &&
+          isLearnerPassed; // Can attempt P Puzzle if completed L & P FCs AND passed L Puzzle
+    } else if (selectedLevel == 'Full') {
+      return isLearnerCompleted &&
+          isProbationaryCompleted &&
+          isFullCompleted &&
+          isLearnerPassed &&
+          isProbationaryPassed; // Can attempt F Puzzle if completed L, P & F FCs AND passed L & P Puzzles
+    }
+    return false;
+  }
+
+  String _getPuzzleButtonText() {
+    if (!_canAttemptPuzzle()) {
+      return "Complete Requirements";
+    }
+    return "Go to Puzzles";
+  }
+
+  void _goToPuzzles() {
+    if (!_canAttemptPuzzle()) {
+      String message = "";
       if (selectedLevel == 'Learner') {
-        isLearnerCompleted = true;
+        message = "Complete all Learner flashcards first!";
       } else if (selectedLevel == 'Probationary') {
-        isProbationaryCompleted = true;
+        if (!isLearnerCompleted) {
+          message = "Complete Learner flashcards first!";
+        } else if (!isProbationaryCompleted) {
+          message = "Complete Probationary flashcards first!";
+        } else if (!isLearnerPassed) {
+          message = "Pass Learner puzzles first!";
+        }
+      } else if (selectedLevel == 'Full') {
+        if (!isLearnerCompleted) {
+          message = "Complete Learner flashcards first!";
+        } else if (!isProbationaryCompleted) {
+          message = "Complete Probationary flashcards first!";
+        } else if (!isFullCompleted) {
+          message = "Complete Full flashcards first!";
+        } else if (!isLearnerPassed) {
+          message = "Pass Learner puzzles first!";
+        } else if (!isProbationaryPassed) {
+          message = "Pass Probationary puzzles first!";
+        }
       }
-      _saveProgress();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TestingScreen(
-            level: selectedLevel,
-            onPass: (bool passed) {
-              setState(() {
-                if (selectedLevel == 'Learner') {
-                  isLearnerPassed = passed;
-                } else if (selectedLevel == 'Probationary') {
-                  isProbationaryPassed = passed;
-                }
-                _saveProgress();
-              });
-            },
-          ),
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: AppColors.error,
+          duration: const Duration(seconds: 3),
         ),
       );
-    });
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TestingScreen(
+          level: selectedLevel,
+          onPass: (bool passed) {
+            setState(() {
+              if (selectedLevel == 'Learner') {
+                isLearnerPassed = passed;
+              } else if (selectedLevel == 'Probationary') {
+                isProbationaryPassed = passed;
+              } else if (selectedLevel == 'Full') {
+                isFullPassed = passed;
+              }
+              _saveProgress();
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Color _getLevelColor(String level) {
+    if (level == 'Learner') return AppColors.secondary;
+    if (level == 'Probationary') return const Color(0xFFFF6B6B); // Light Red
+    if (level == 'Full') return AppColors.success;
+    return AppColors.primary;
+  }
+
+  bool _isLevelUnlocked(String level) {
+    if (level == 'Learner') return true; // Always unlocked
+    if (level == 'Probationary') return isLearnerCompleted && isLearnerPassed;
+    if (level == 'Full') return isProbationaryCompleted && isProbationaryPassed;
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     final currentFlashcards = flashcards[selectedLevel]!;
+    final isLastCard = currentCardIndex == currentFlashcards.length - 1;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -395,32 +489,19 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildLevelButton(
-                      'Learner',
-                      isLearnerCompleted,
-                      true,
-                      AppColors.secondary,
-                    ),
-                    _buildLevelButton(
-                      'Probationary',
-                      isProbationaryCompleted,
-                      isLearnerCompleted && isLearnerPassed,
-                      AppColors.error,
-                    ),
-                    _buildLevelButton(
-                      'Full',
-                      false,
-                      isLearnerCompleted &&
-                          isLearnerPassed &&
-                          isProbationaryCompleted &&
-                          isProbationaryPassed,
-                      AppColors.success,
-                    ),
+                    _buildLevelButton('Learner'),
+                    _buildLevelButton('Probationary'),
+                    _buildLevelButton('Full'),
                   ],
                 ),
               ),
 
               const SizedBox(height: 20),
+
+              // Progress indicators
+              _buildProgressIndicators(),
+
+              const SizedBox(height: 12),
 
               // Flashcard Box
               Expanded(
@@ -504,20 +585,17 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                       ),
                     ),
                   ),
+
                   ZoomIn(
                     child: ElevatedButton.icon(
-                      onPressed: currentCardIndex < currentFlashcards.length - 1
-                          ? _nextCard
-                          : _goToTesting,
+                      onPressed: _nextCard,
                       icon: const Icon(
                         Icons.arrow_forward,
                         color: Colors.white,
                         size: 20,
                       ),
                       label: Text(
-                        currentCardIndex < currentFlashcards.length - 1
-                            ? "Next"
-                            : "Finish",
+                        isLastCard ? "Finish" : "Next",
                         style: CustomTextStyle.subHeading.copyWith(
                           color: Colors.white,
                         ),
@@ -540,31 +618,23 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
               const SizedBox(height: 16),
 
-              // Go to Puzzles Button
-              if (currentCardIndex == currentFlashcards.length - 1 &&
-                  ((selectedLevel == 'Learner' && isLearnerCompleted) ||
-                      (selectedLevel == 'Probationary' &&
-                          isLearnerCompleted &&
-                          isLearnerPassed &&
-                          isProbationaryCompleted) ||
-                      (selectedLevel == 'Full' &&
-                          isLearnerCompleted &&
-                          isLearnerPassed &&
-                          isProbationaryCompleted &&
-                          isProbationaryPassed)))
+              // Go to Puzzles Button - Show when on last card
+              if (isLastCard)
                 ZoomIn(
                   child: ElevatedButton.icon(
-                    onPressed: _goToTesting,
+                    onPressed: _goToPuzzles,
                     icon: const Icon(Icons.extension, color: Colors.white),
                     label: Text(
-                      "Go to Puzzles",
+                      _getPuzzleButtonText(),
                       style: CustomTextStyle.subHeading.copyWith(
                         fontSize: 18,
                         color: Colors.white,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: _canAttemptPuzzle()
+                          ? AppColors.primary
+                          : AppColors.textSecondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -583,12 +653,23 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     );
   }
 
-  Widget _buildLevelButton(
-    String level,
-    bool isCompleted,
-    bool isUnlocked,
-    Color color,
-  ) {
+  Widget _buildLevelButton(String level) {
+    final isCompleted = level == 'Learner'
+        ? isLearnerCompleted
+        : level == 'Probationary'
+        ? isProbationaryCompleted
+        : isFullCompleted;
+    final isUnlocked = _isLevelUnlocked(level);
+    final isPassed = level == 'Learner'
+        ? isLearnerPassed
+        : level == 'Probationary'
+        ? isProbationaryPassed
+        : isFullPassed;
+
+    Color buttonColor = _getLevelColor(level);
+    if (isPassed) buttonColor = AppColors.success;
+    if (!isUnlocked) buttonColor = AppColors.textSecondary.withOpacity(0.5);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ZoomIn(
@@ -603,7 +684,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                 }
               : null,
           style: ElevatedButton.styleFrom(
-            backgroundColor: isCompleted ? AppColors.success : color,
+            backgroundColor: buttonColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -618,6 +699,49 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildProgressIndicators() {
+    return Column(
+      children: [
+        // Card counter
+        Text(
+          'Card ${currentCardIndex + 1} / ${flashcards[selectedLevel]!.length}',
+          style: CustomTextStyle.subHeading,
+        ),
+
+        const SizedBox(height: 8),
+
+        // Progress status
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isLearnerCompleted && selectedLevel == 'Learner')
+              Icon(Icons.check_circle, color: AppColors.success, size: 16),
+            if (isProbationaryCompleted && selectedLevel == 'Probationary')
+              Icon(Icons.check_circle, color: AppColors.success, size: 16),
+            if (isFullCompleted && selectedLevel == 'Full')
+              Icon(Icons.check_circle, color: AppColors.success, size: 16),
+
+            const SizedBox(width: 4),
+
+            Text(
+              selectedLevel == 'Learner' && isLearnerCompleted
+                  ? 'Completed!'
+                  : selectedLevel == 'Probationary' && isProbationaryCompleted
+                  ? 'Completed!'
+                  : selectedLevel == 'Full' && isFullCompleted
+                  ? 'Completed!'
+                  : 'In Progress',
+              style: CustomTextStyle.hint.copyWith(
+                color: AppColors.success,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
