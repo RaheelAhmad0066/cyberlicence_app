@@ -21,6 +21,15 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        iconTheme: IconThemeData(color: AppColors.accent),
+        title: Text(
+          'How CyberLicence Works',
+          style: CustomTextStyle.headingLargeGreen,
+        ),
+      ),
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
@@ -28,12 +37,6 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /// Heading
-              Text(
-                'How CyberLicence Works',
-                style: CustomTextStyle.headingLargeGreen,
-                textAlign: TextAlign.center,
-              ),
               const SizedBox(height: 28),
 
               /// Steps with Icons

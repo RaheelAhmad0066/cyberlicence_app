@@ -365,17 +365,15 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
   bool _canAttemptPuzzle() {
     if (selectedLevel == 'Learner') {
-      return isLearnerCompleted; // Can attempt L Puzzle if completed all L FCs
+      return isLearnerCompleted;
     } else if (selectedLevel == 'Probationary') {
-      return isLearnerCompleted &&
-          isProbationaryCompleted &&
-          isLearnerPassed; // Can attempt P Puzzle if completed L & P FCs AND passed L Puzzle
+      return isLearnerCompleted && isProbationaryCompleted && isLearnerPassed;
     } else if (selectedLevel == 'Full') {
       return isLearnerCompleted &&
           isProbationaryCompleted &&
           isFullCompleted &&
           isLearnerPassed &&
-          isProbationaryPassed; // Can attempt F Puzzle if completed L, P & F FCs AND passed L & P Puzzles
+          isProbationaryPassed;
     }
     return false;
   }
@@ -448,15 +446,20 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
 
   Color _getLevelColor(String level) {
     if (level == 'Learner') return AppColors.secondary;
-    if (level == 'Probationary') return const Color(0xFFFF6B6B); // Light Red
+    if (level == 'Probationary') return const Color(0xFFFF6B6B);
     if (level == 'Full') return AppColors.success;
     return AppColors.primary;
   }
 
   bool _isLevelUnlocked(String level) {
-    if (level == 'Learner') return true; // Always unlocked
+    if (level == 'Learner') return true;
     if (level == 'Probationary') return isLearnerCompleted && isLearnerPassed;
-    if (level == 'Full') return isProbationaryCompleted && isProbationaryPassed;
+    if (level == 'Full') {
+      return isLearnerCompleted &&
+          isProbationaryCompleted &&
+          isLearnerPassed &&
+          isProbationaryPassed;
+    }
     return false;
   }
 
@@ -470,6 +473,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         elevation: 0,
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'CyberLicence',
           style: CustomTextStyle.headingLargeGreen.copyWith(

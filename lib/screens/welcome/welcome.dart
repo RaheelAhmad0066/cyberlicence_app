@@ -28,6 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
@@ -85,7 +86,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               const SizedBox(height: 16),
               SizedBox(
-                height: 100,
+                height: 70,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: avatars.length,

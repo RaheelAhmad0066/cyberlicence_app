@@ -684,6 +684,7 @@ class _TestingScreenState extends State<TestingScreen> {
   Random random = Random();
   bool showExplanation = false;
   String? currentExplanation;
+  bool hasAnswered = false; // NEW: Track if user has answered
 
   @override
   void initState() {
@@ -703,32 +704,38 @@ class _TestingScreenState extends State<TestingScreen> {
     score = 0;
     selectedOptionIndex = null;
     showExplanation = false;
+    hasAnswered = false;
     setState(() {});
   }
 
   void _selectOption(int index) {
+    // Only allow selection if user hasn't answered yet
+    if (hasAnswered) return;
+
     setState(() {
       selectedOptionIndex = index;
       currentExplanation =
           selectedQuestions[currentQuestionIndex]['explanation'];
       showExplanation = true;
+      hasAnswered = true;
+
+      // Check if answer is correct and update score immediately
+      if (selectedOptionIndex ==
+          selectedQuestions[currentQuestionIndex]['correctIndex']) {
+        score++;
+      }
     });
   }
 
   void _nextQuestion() {
-    if (selectedOptionIndex == null) return;
-
-    // Check if answer is correct
-    if (selectedOptionIndex ==
-        selectedQuestions[currentQuestionIndex]['correctIndex']) {
-      score++;
-    }
+    if (!hasAnswered) return; // Must answer before proceeding
 
     setState(() {
       if (currentQuestionIndex < selectedQuestions.length - 1) {
         currentQuestionIndex++;
         selectedOptionIndex = null;
         showExplanation = false;
+        hasAnswered = false;
       } else {
         _showResult();
       }
@@ -740,12 +747,26 @@ class _TestingScreenState extends State<TestingScreen> {
     bool passed = score >= 9;
     widget.onPass(passed);
 
+    String resultTitle = passed ? "Congratulations! 🎉" : "Oops! Try Again 😞";
+
+    // Different messages for Full level vs others
+    String continueButtonText;
+    if (passed) {
+      if (widget.level == 'Full') {
+        continueButtonText = "View Your CyberLicence";
+      } else {
+        continueButtonText = "Continue to Next Level";
+      }
+    } else {
+      continueButtonText = "Retry Puzzle";
+    }
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => FadeInUp(
         child: AlertDialog(
-          backgroundColor: AppColors.white, // Always white background
+          backgroundColor: AppColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -760,7 +781,7 @@ class _TestingScreenState extends State<TestingScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                passed ? "Congratulations! 🎉" : "Oops! Try Again 😞",
+                resultTitle,
                 style: CustomTextStyle.headingLargeDark.copyWith(
                   color: passed ? AppColors.success : AppColors.error,
                 ),
@@ -770,7 +791,7 @@ class _TestingScreenState extends State<TestingScreen> {
               Text(
                 "You scored $score / 10 (${(score * 10)}%)",
                 style: CustomTextStyle.body.copyWith(
-                  color: AppColors.textPrimary, // Dark grey for score
+                  color: AppColors.textPrimary,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -816,7 +837,7 @@ class _TestingScreenState extends State<TestingScreen> {
                   ),
                 ),
                 child: Text(
-                  passed ? "Continue to Next Level" : "Retry Puzzle",
+                  continueButtonText,
                   style: CustomTextStyle.subHeading.copyWith(
                     color: Colors.white,
                   ),
@@ -842,6 +863,48 @@ class _TestingScreenState extends State<TestingScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _restartTest() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text("Restart Test?", style: CustomTextStyle.headingLargeDark),
+        content: Text(
+          "Your current progress will be lost. Start with a new set of 10 random questions?",
+          style: CustomTextStyle.body,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Cancel",
+              style: CustomTextStyle.subHeading.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _loadQuestions();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(
+              "Restart",
+              style: CustomTextStyle.subHeading.copyWith(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -873,6 +936,13 @@ class _TestingScreenState extends State<TestingScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.white),
+            onPressed: _restartTest,
+            tooltip: "Restart with new questions",
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -934,11 +1004,12 @@ class _TestingScreenState extends State<TestingScreen> {
                 child: ListView.builder(
                   itemCount: options.length,
                   itemBuilder: (context, index) {
-                    final optionLabel = String.fromCharCode(
-                      65 + index,
-                    ); // A, B, C, D
+                    final optionLabel = String.fromCharCode(65 + index);
                     final isSelected = selectedOptionIndex == index;
                     final isCorrect = index == currentQuestion['correctIndex'];
+                    final showCorrect = hasAnswered && isCorrect;
+                    final showIncorrect =
+                        hasAnswered && isSelected && !isCorrect;
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -949,17 +1020,17 @@ class _TestingScreenState extends State<TestingScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? (isCorrect
-                                        ? AppColors.success
-                                        : AppColors.error)
+                              color: showCorrect
+                                  ? AppColors.success
+                                  : showIncorrect
+                                  ? AppColors.error
                                   : AppColors.cardBackground,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected
-                                    ? (isCorrect
-                                          ? AppColors.success
-                                          : AppColors.error)
+                                color: showCorrect
+                                    ? AppColors.success
+                                    : showIncorrect
+                                    ? AppColors.error
                                     : AppColors.textSecondary.withOpacity(0.3),
                                 width: 2,
                               ),
@@ -970,7 +1041,7 @@ class _TestingScreenState extends State<TestingScreen> {
                                   width: 40,
                                   height: 40,
                                   decoration: BoxDecoration(
-                                    color: isSelected
+                                    color: (showCorrect || showIncorrect)
                                         ? Colors.white
                                         : AppColors.primary.withOpacity(0.1),
                                     shape: BoxShape.circle,
@@ -980,10 +1051,10 @@ class _TestingScreenState extends State<TestingScreen> {
                                       optionLabel,
                                       style: CustomTextStyle.subHeading
                                           .copyWith(
-                                            color: isSelected
-                                                ? (isCorrect
-                                                      ? AppColors.success
-                                                      : AppColors.error)
+                                            color: showCorrect
+                                                ? AppColors.success
+                                                : showIncorrect
+                                                ? AppColors.error
                                                 : AppColors.textPrimary,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -995,16 +1066,16 @@ class _TestingScreenState extends State<TestingScreen> {
                                   child: Text(
                                     options[index],
                                     style: CustomTextStyle.body.copyWith(
-                                      color: isSelected
+                                      color: (showCorrect || showIncorrect)
                                           ? Colors.white
                                           : AppColors.textPrimary,
                                       fontSize: 16,
                                     ),
                                   ),
                                 ),
-                                if (isSelected && isCorrect)
+                                if (showCorrect)
                                   const Icon(Icons.check, color: Colors.white),
-                                if (isSelected && !isCorrect)
+                                if (showIncorrect)
                                   const Icon(Icons.close, color: Colors.white),
                               ],
                             ),
@@ -1057,7 +1128,7 @@ class _TestingScreenState extends State<TestingScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: selectedOptionIndex != null ? _nextQuestion : null,
+                  onPressed: hasAnswered ? _nextQuestion : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     disabledBackgroundColor: AppColors.textSecondary

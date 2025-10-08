@@ -40,18 +40,34 @@ class _CompletionScreenState extends State<CompletionScreen> {
     }
   }
 
+  String _getCompletionMessage() {
+    if (widget.level == 'Full') {
+      return "Amazing work!\n\nYou're on your way to get your CyberLicence! 🌟";
+    } else {
+      return "Amazing work!\n\nYou're on your way to get your CyberLicence! 🌟";
+    }
+  }
+
+  String _getButtonText() {
+    if (widget.level == 'Full') {
+      return "Get My Licence";
+    } else {
+      return "Continue to Next Level";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String levelImage;
     switch (widget.level) {
       case 'Learner':
-        levelImage = 'assets/image1.png'; // Replace with actual L image
+        levelImage = 'assets/image1.png';
         break;
       case 'Probationary':
-        levelImage = 'assets/image2.png'; // Replace with actual P image
+        levelImage = 'assets/image2.png';
         break;
       default:
-        levelImage = 'assets/image3.png'; // Replace with actual F image
+        levelImage = 'assets/image3.png';
     }
 
     return Scaffold(
@@ -104,15 +120,25 @@ class _CompletionScreenState extends State<CompletionScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          // Different heading for Full level
                           Text(
-                            '🎉 Congratulations! 🎉',
+                            widget.level == 'Full'
+                                ? '🙌 Congratulations! 🙌'
+                                : '🎉 Congratulations! 🎉',
                             style: CustomTextStyle.headingLargeGreen,
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 10),
                           Text(
-                            'You passed the ${widget.level} puzzles!',
-                            style: CustomTextStyle.subHeading,
+                            widget.level == 'Full'
+                                ? 'Your CyberLicence'
+                                : 'You passed the ${widget.level} puzzles!',
+                            style: CustomTextStyle.subHeading.copyWith(
+                              fontSize: widget.level == 'Full' ? 22 : 18,
+                              fontWeight: widget.level == 'Full'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 20),
@@ -130,11 +156,16 @@ class _CompletionScreenState extends State<CompletionScreen> {
                                 ),
                           ),
                           const SizedBox(height: 20),
-                          Text(
-                            'Amazing work! You’re on your way to becoming a cyber safety expert! 🌟',
-                            style: CustomTextStyle.hint,
-                            textAlign: TextAlign.center,
-                          ),
+
+                          // Updated message - same for all levels except Full shows different heading
+                          if (widget.level != 'Full')
+                            Text(
+                              'Amazing work!\n\nYou\'re on your way to get your CyberLicence! 🌟',
+                              style: CustomTextStyle.hint.copyWith(
+                                fontSize: 15,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                         ],
                       ),
                     ),
