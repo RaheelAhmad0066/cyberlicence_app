@@ -7,6 +7,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:intl/intl.dart';
 
 class CertificateDownloadScreen extends StatefulWidget {
   final String level;
@@ -38,7 +39,7 @@ class _CertificateDownloadScreenState extends State<CertificateDownloadScreen> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userName = prefs.getString('userName') ?? 'Cyber Explorer';
+      userName = prefs.getString('userName') ?? 'David';
       int avatarIndex = prefs.getInt('avatarIndex') ?? 0;
       avatarPath = avatars[avatarIndex % avatars.length];
     });
@@ -143,6 +144,7 @@ class _CertificateDownloadScreenState extends State<CertificateDownloadScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
+              // ignore: deprecated_member_use
               AppColors.success.withOpacity(0.15),
               AppColors.primary.withOpacity(0.15),
             ],
@@ -216,21 +218,22 @@ class _CertificateDownloadScreenState extends State<CertificateDownloadScreen> {
                         ),
                         child: Column(
                           children: [
-                            Image.asset(
-                              avatarPath,
-                              width: 120,
-                              height: 120,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(
-                                    Icons.person,
-                                    size: 120,
-                                    color: Colors.white,
-                                  ),
+                            CircleAvatar(
+                              radius: 40,
+                              backgroundColor: Colors.grey.withOpacity(0.4),
+                              backgroundImage: AssetImage(avatarPath),
                             ),
                             const SizedBox(height: 15),
                             Text(
-                              userName,
+                              'CyberLicence',
                               style: CustomTextStyle.headingLargeDark.copyWith(
+                                color: AppColors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              userName,
+                              style: CustomTextStyle.body.copyWith(
                                 color: AppColors.white,
                               ),
                               textAlign: TextAlign.center,
@@ -243,17 +246,11 @@ class _CertificateDownloadScreenState extends State<CertificateDownloadScreen> {
                               ),
                               textAlign: TextAlign.center,
                             ),
+
                             const SizedBox(height: 10),
                             Text(
-                              widget.level,
-                              style: CustomTextStyle.subHeading.copyWith(
-                                color: AppColors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Issued: ${DateTime.now()}',
-                              style: CustomTextStyle.hint.copyWith(
+                              'Issued: ${DateFormat('dd/MM/yyyy').format(DateTime.now())}',
+                              style: CustomTextStyle.body.copyWith(
                                 color: AppColors.white,
                               ),
                             ),
@@ -312,7 +309,7 @@ class _CertificateDownloadScreenState extends State<CertificateDownloadScreen> {
                           elevation: 10,
                         ),
                         child: Text(
-                          'Back to Cards',
+                          'Back to FlashCards',
                           style: CustomTextStyle.body.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

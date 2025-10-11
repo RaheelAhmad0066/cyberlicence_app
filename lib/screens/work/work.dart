@@ -45,8 +45,8 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                   children: [
                     _buildStepWithIcon(
                       Icons.school,
-                      'Learn from the flashcards',
-                      'Study fun cards to learn about cyber safety.',
+                      'Practice with flashcards',
+                      'Learn about cyber safety.',
                     ),
                     _buildStepWithIcon(
                       Icons.quiz,
@@ -55,8 +55,8 @@ class _HowItWorksScreenState extends State<HowItWorksScreen> {
                     ),
                     _buildStepWithIcon(
                       Icons.emoji_events,
-                      'Move from L → P → F',
-                      'Pass with 90% or more to progress.',
+                      'Score 90% or more to level up!',
+                      'Earn your Learner,Probationary.and Full Licence badges!',
                     ),
                   ],
                 ),

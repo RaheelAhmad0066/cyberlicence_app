@@ -3,6 +3,7 @@ import 'package:cyber_licence/utils/app_styles.dart';
 import 'package:cyber_licence/utils/colors.dart';
 import 'package:cyber_licence/utils/images.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -37,6 +38,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               /// App Title
               Text("CyberLicence", style: CustomTextStyle.headingLargeGreen),
+              const SizedBox(height: 20),
+              Text(
+                "CyberLience teaches you how to stay safe online,just like learning to drive safely.",
+                style: CustomTextStyle.hint.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 30),
 
               /// Name Input
@@ -86,7 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               const SizedBox(height: 16),
               SizedBox(
-                height: 70,
+                height: 80,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: avatars.length,
@@ -97,15 +107,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           setState(() => selectedAvatar = avatars[index]),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        // margin: const EdgeInsets.symmetric(horizontal: 2),
+                        padding: const EdgeInsets.all(2), // 👈 extra padding
                         decoration: BoxDecoration(
+                          shape: BoxShape.circle, // 👈 makes border circular
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary
                                 : Colors.transparent,
                             width: 3,
                           ),
-                          borderRadius: BorderRadius.circular(16),
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
@@ -115,12 +126,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 ]
                               : [],
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                        child: ClipOval(
                           child: Image.asset(
                             avatars[index],
-                            width: 70,
-                            height: 70,
+                            width: 60,
+                            height: 60,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -129,6 +139,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   },
                 ),
               ),
+
               const SizedBox(height: 30),
 
               /// Parent Confirmation
@@ -147,53 +158,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
 
-              /// How it Works
-              Text(
-                "How CyberLicence Works",
-                style: CustomTextStyle.headingLargeGreen,
-              ),
-              const SizedBox(height: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "• Learn from the flashcards",
-                    style: CustomTextStyle.body,
-                  ),
-                  Text("• Solve the puzzles", style: CustomTextStyle.body),
-                  Text(
-                    "• Pass with 90% or more 🎯",
-                    style: CustomTextStyle.body,
-                  ),
-                  Text(
-                    "• Unlock levels as you progress",
-                    style: CustomTextStyle.body,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 28),
-
-              /// Roadmap Flow (L → P → F)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildLevelCircle("L", Colors.yellow),
-                  const SizedBox(width: 18),
-                  _buildLevelCircle("P", Colors.red.shade300),
-                  const SizedBox(width: 18),
-                  _buildLevelCircle("F", AppColors.primary),
-                ],
-              ),
               const SizedBox(height: 50),
 
               /// Start Button
               GestureDetector(
-                onTap: () {
+                onTap: () async {
                   if (_nameController.text.isNotEmpty &&
                       selectedAvatar.isNotEmpty &&
                       parentConfirmed) {
+                    // ✅ Save preferences
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString('userName', _nameController.text);
+
+                    // ✅ Navigate to next screen
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -214,15 +192,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     );
                   }
                 },
+
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
+                  width: double.infinity,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 50,
                     vertical: 16,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.primary.withOpacity(0.4),
@@ -231,10 +211,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ],
                   ),
-                  child: Text(
-                    "Let’s Drive Safely Online",
-                    style: CustomTextStyle.subHeading.copyWith(
-                      color: Colors.white,
+                  child: Center(
+                    child: Text(
+                      "Start Learning",
+                      style: CustomTextStyle.subHeading.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
