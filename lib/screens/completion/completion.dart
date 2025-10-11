@@ -89,16 +89,6 @@ class _CompletionScreenState extends State<CompletionScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BounceInDown(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, size: 26, color: Colors.amber),
-                        SizedBox(width: 8),
-                        Icon(Icons.star, size: 26, color: Colors.amber),
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 20),
 
                   // Card
@@ -131,7 +121,7 @@ class _CompletionScreenState extends State<CompletionScreen> {
                           const SizedBox(height: 10),
                           Text(
                             widget.level == 'Full'
-                                ? 'Your CyberLicence'
+                                ? 'You\'ve earned your CyberLicence!'
                                 : 'You passed the ${widget.level} puzzles!',
                             style: CustomTextStyle.subHeading.copyWith(
                               fontSize: widget.level == 'Full' ? 22 : 18,
@@ -157,14 +147,77 @@ class _CompletionScreenState extends State<CompletionScreen> {
                           ),
                           const SizedBox(height: 20),
 
-                          // Updated message - same for all levels except Full shows different heading
+                          // Buttons
                           if (widget.level != 'Full')
-                            Text(
-                              'Amazing work!\n\nYou\'re on your way to get your CyberLicence! 🌟',
-                              style: CustomTextStyle.hint.copyWith(
-                                fontSize: 15,
+                            BounceInUp(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  String nextLevel = getNextLevel(widget.level);
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TestingScreen(
+                                        level: nextLevel,
+                                        onPass: (bool passed) {},
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                    vertical: 16,
+                                  ),
+                                  elevation: 8,
+                                ),
+                                child: Text(
+                                  'Continue to Next Level',
+                                  style: CustomTextStyle.body.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
                               ),
-                              textAlign: TextAlign.center,
+                            )
+                          else
+                            BounceInUp(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CertificateDownloadScreen(
+                                            level: widget.level,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                    vertical: 16,
+                                  ),
+                                  elevation: 8,
+                                ),
+                                child: Text(
+                                  'Get My Licence',
+                                  style: CustomTextStyle.body.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ),
                             ),
                         ],
                       ),
@@ -172,78 +225,6 @@ class _CompletionScreenState extends State<CompletionScreen> {
                   ),
 
                   const SizedBox(height: 30),
-
-                  // Buttons
-                  if (widget.level != 'Full')
-                    BounceInUp(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          String nextLevel = getNextLevel(widget.level);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TestingScreen(
-                                level: nextLevel,
-                                onPass: (bool passed) {},
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 16,
-                          ),
-                          elevation: 8,
-                        ),
-                        child: Text(
-                          'Continue to Next Level',
-                          style: CustomTextStyle.body.copyWith(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    )
-                  else
-                    BounceInUp(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CertificateDownloadScreen(
-                                level: widget.level,
-                              ),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 16,
-                          ),
-                          elevation: 8,
-                        ),
-                        child: Text(
-                          'Get My Licence',
-                          style: CustomTextStyle.body.copyWith(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
